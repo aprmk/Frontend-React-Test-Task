@@ -131,7 +131,9 @@ const Table: React.FC = () => {
                             {row.map(cell => {
                                 const percentOfSum = Math.round((cell.amount / rowSumValue) * 100);
                                 const percentOfMax = Math.round((cell.amount / maxAmount) * 100);
-                                const isHighlightedByRowHover = hoveredSumRowIndex === rowIndex && closestRowIds.has(cell.id);
+                                const isHighlightedByRowHover =
+                                    hoveredSumRowIndex === rowIndex &&
+                                    (closestRowIds.has(cell.id) || hoveredSumRowIndex !== null);
 
                                 return (
                                     <td
