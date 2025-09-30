@@ -1,0 +1,78 @@
+.remove-btn button {
+    padding: 4px 8px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove-btn button:hover {
+    background: #b02a37;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    min-width: 60px;
+}
+
+th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.percentile {
+    background-color: #fafafa;
+    font-style: italic;
+    color: #555;
+}
+
+td:not(.remove-btn):hover {
+    background-color: #eaf4ff;
+    cursor: pointer;
+}
+
+.highlight {
+    background-color: #fff3cd;
+}
+
+.table-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.table-actions {
+    display: flex;
+    column-gap: 1rem;
+}
+
+.table-controls input {
+    width: 60px;
+    padding: 4px;
+}
+
+td.highlight {
+    background-color: #fff6b0;
+}
+
+td {
+    transition: background 0.2s ease;
+}
+
+.input-error {
+    color: red;
+}
+
+
+
