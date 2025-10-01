@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Table.css";
+import "./Table.scss";
 import { useTable } from "./TableContext";
 
 const Table: React.FC = () => {
@@ -40,7 +40,11 @@ const Table: React.FC = () => {
                             id: Date.now() + Math.random(),
                             amount: random3digits()
                         }));
-                        setMatrix(prev => [...prev, newRow]);
+                        setMatrix(prev => {
+                            const newMatrix = [...prev, newRow];
+                            setRows(newMatrix.length);
+                            return newMatrix;
+                        });
                     }}>
                         Add Row
                     </button>
@@ -122,8 +126,6 @@ const Table: React.FC = () => {
                 {matrix.map((row, rowIndex) => {
                     const rowSumValue = sums[rowIndex];
                     const maxAmount = Math.max(...row.map(cell => cell.amount));
-                    const sortedRow = [...row].sort((a, b) => b.amount - a.amount);
-                    const closestRowIds = new Set(sortedRow.slice(0, xCount).map(cell => cell.id));
 
                     return (
                         <tr key={rowIndex}>
@@ -131,9 +133,7 @@ const Table: React.FC = () => {
                             {row.map(cell => {
                                 const percentOfSum = Math.round((cell.amount / rowSumValue) * 100);
                                 const percentOfMax = Math.round((cell.amount / maxAmount) * 100);
-                                const isHighlightedByRowHover =
-                                    hoveredSumRowIndex === rowIndex &&
-                                    (closestRowIds.has(cell.id) || hoveredSumRowIndex !== null);
+                                const isHighlightedByRowHover = hoveredSumRowIndex === rowIndex;
 
                                 return (
                                     <td
@@ -141,11 +141,7 @@ const Table: React.FC = () => {
                                         onMouseEnter={() => handleHover(cell.amount)}
                                         onMouseLeave={handleMouseLeave}
                                         onClick={() => handleClick(cell.id)}
-                                        className={highlightedIds.has(cell.id) ? "highlight" : ""}
-                                        style={isHighlightedByRowHover ? {
-                                            background: `rgba(100, 100, 255, ${percentOfMax / 100})`,
-                                            color: "#000"
-                                        } : undefined}
+                                        className={`${highlightedIds.has(cell.id) ? "highlight" : ""} ${isHighlightedByRowHover ? `heatmap-${percentOfMax}` : ""}`}
                                     >
                                         {isHighlightedByRowHover ? `${percentOfSum}%` : cell.amount}
                                     </td>
@@ -159,9 +155,11 @@ const Table: React.FC = () => {
                             </td>
                             <td className="remove-btn">
                                 <button onClick={() => {
-                                    setMatrix(previousMatrix =>
-                                        previousMatrix.filter((row, index) => index !== rowIndex)
-                                    );
+                                    setMatrix(previousMatrix => {
+                                        const updatedMatrix = previousMatrix.filter((_, index) => index !== rowIndex);
+                                        setRows(updatedMatrix.length); // ✅ оновлення rows
+                                        return updatedMatrix;
+                                    });
                                 }}>
                                     Remove
                                 </button>

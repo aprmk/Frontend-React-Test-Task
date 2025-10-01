@@ -74,5 +74,13 @@ td {
     color: red;
 }
 
+@for $i from 1 through 100 {
+    .heatmap-#{$i} {
+        background-color: rgba(rgb(100, 100, 255), $i / 100);
+        color: #000;
+    }
+}
+
+
 
 
