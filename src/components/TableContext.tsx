@@ -113,17 +113,30 @@ export const TableProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const handleHover = (amount: number) => {
         const idx = binarySearchClosestIndex(allAmounts, amount);
-        const start = Math.max(0, idx - Math.floor(xCount / 2));
-        const end = Math.min(allAmounts.length, start + xCount);
-        const closest = allAmounts.slice(start, end);
+        let start = idx - 1;
+        let end = idx + 1;
+        const closesIds: Set<number> = new Set();
+        while (closesIds.size < xCount) {
+            let value = null;
+            if (start < 0) {
+                value = allAmounts[end];
+                end += 1;
+            } else if (end >= allAmounts.length) {
+                value = allAmounts[start];
+                start -= 1;
+            }
+            else if (allAmounts[end] - allAmounts[idx] < allAmounts[idx] - allAmounts[start]) {
+                value = allAmounts[end];
+                end += 1;
+            } else {
+                value = allAmounts[start];
+                start -= 1;
+            }
+            cellsForAmount[value].forEach(id => closesIds.add(id));
+        }
+        setHighlightedIds(closesIds);
+    }
 
-        const ids = new Set<number>();
-        closest.forEach(val => {
-            cellsForAmount[val]?.forEach(id => ids.add(id));
-        });
-
-        setHighlightedIds(ids);
-    };
 
     const handleMouseLeave = () => {
         setHighlightedIds(new Set());
