@@ -69,7 +69,7 @@ export const TableProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         } else {
             setMatrix([]);
         }
-    }, [rows, cols, xCount]);
+    }, [cols]);
 
     const sums = useMemo(() => matrix.map(rowSum), [matrix]);
 
